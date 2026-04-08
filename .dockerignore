@@ -1,0 +1,7 @@
+.git
+**/.DS_Store
+financeflow/node_modules
+financeflow/.next
+financeflow/out
+*.md
+Dashboard*.html

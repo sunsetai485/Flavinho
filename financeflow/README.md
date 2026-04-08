@@ -67,12 +67,15 @@ npm start
 
 ## Deploy no EasyPanel
 
+O repositório tem um **`Dockerfile` na raiz** (não só em `financeflow/`), para o build encontrar o arquivo quando o contexto é o clone inteiro do GitHub.
+
 ### Opção 1: Via GitHub (Recomendado)
 
 1. Suba o código para um repositório GitHub
 2. No EasyPanel, crie um novo serviço **App**
 3. Conecte com seu repositório GitHub
-4. Configure as variáveis de ambiente:
+4. Deixe o caminho do Dockerfile como **`Dockerfile`** (raiz) ou vazio/padrão
+5. Configure as variáveis de ambiente:
    - `NEXT_PUBLIC_SUPABASE_URL`
    - `NEXT_PUBLIC_SUPABASE_ANON_KEY`
    - `SUPABASE_SERVICE_ROLE_KEY`

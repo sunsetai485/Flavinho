@@ -1,16 +1,23 @@
-import { createClient } from '@supabase/supabase-js';
+import { createBrowserClient } from '@supabase/ssr';
+import type { SupabaseClient } from '@supabase/supabase-js';
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
+let browserClient: SupabaseClient | null = null;
 
-if (!supabaseUrl || !supabaseAnonKey) {
-  throw new Error('Missing Supabase environment variables');
-}
+/**
+ * Cliente Supabase no browser (Next.js App Router).
+ * Usa @supabase/ssr para sessão estável.
+ */
+export function getSupabaseBrowser(): SupabaseClient {
+  if (browserClient) return browserClient;
 
-export const supabase = createClient(supabaseUrl, supabaseAnonKey);
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL?.trim();
+  const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY?.trim();
+  if (!url || !key) {
+    throw new Error(
+      'Supabase não configurado. Defina NEXT_PUBLIC_SUPABASE_URL e NEXT_PUBLIC_SUPABASE_ANON_KEY no .env.local e faça um novo build no deploy.'
+    );
+  }
 
-export function getServiceClient() {
-  const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
-  if (!serviceKey) throw new Error('Missing SUPABASE_SERVICE_ROLE_KEY');
-  return createClient(supabaseUrl, serviceKey);
+  browserClient = createBrowserClient(url, key);
+  return browserClient;
 }

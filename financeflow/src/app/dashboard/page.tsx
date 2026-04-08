@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState, useCallback, useRef } from 'react';
-import { supabase } from '@/lib/supabase';
+import { getSupabaseBrowser } from '@/lib/supabase';
 import { api, type DashboardData } from '@/lib/api-client';
 import { MONTH_NAMES, MONTH_NAME_TO_NUM } from '@/lib/utils';
 import Papa from 'papaparse';
@@ -147,7 +147,7 @@ export default function DashboardPage() {
   };
 
   const handleLogout = async () => {
-    await supabase.auth.signOut();
+    await getSupabaseBrowser().auth.signOut();
   };
 
   const handleAddGoal = async (category: string, limit: number) => {

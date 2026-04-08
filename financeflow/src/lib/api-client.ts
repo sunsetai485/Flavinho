@@ -1,7 +1,7 @@
-import { supabase } from './supabase';
+import { getSupabaseBrowser } from './supabase';
 
 async function getAuthHeaders(): Promise<Record<string, string>> {
-  const { data: { session } } = await supabase.auth.getSession();
+  const { data: { session } } = await getSupabaseBrowser().auth.getSession();
   if (!session?.access_token) throw new Error('Not authenticated');
   return {
     'Content-Type': 'application/json',

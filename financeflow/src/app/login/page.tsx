@@ -1,7 +1,8 @@
 'use client';
 
 import { useState } from 'react';
-import { supabase } from '@/lib/supabase';
+import { getSupabaseBrowser } from '@/lib/supabase';
+import { mapAuthErrorMessage } from '@/lib/auth-errors';
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
@@ -17,17 +18,43 @@ export default function LoginPage() {
     setError(null);
     setMessage(null);
 
+    const emailNorm = email.trim().toLowerCase();
+
+    const supabase = getSupabaseBrowser();
+
     try {
       if (isSignUp) {
-        const { error } = await supabase.auth.signUp({ email, password });
-        if (error) throw error;
-        setMessage('Conta criada! Verifique seu e-mail para confirmar o cadastro.');
+        const { data, error: signErr } = await supabase.auth.signUp({
+          email: emailNorm,
+          password,
+        });
+        if (signErr) throw signErr;
+        if (data.session) {
+          window.location.assign('/');
+          return;
+        }
+        setMessage(
+          'Conta criada. Se o projeto exige confirmação de e-mail, abra o link enviado ou desative em Supabase → Authentication → Providers → Email → Confirm email.'
+        );
       } else {
-        const { error } = await supabase.auth.signInWithPassword({ email, password });
-        if (error) throw error;
+        const { error: signInErr } = await supabase.auth.signInWithPassword({
+          email: emailNorm,
+          password,
+        });
+        if (signInErr) throw signInErr;
+
+        const { data: { session } } = await supabase.auth.getSession();
+        if (!session) {
+          setError(
+            'Login não gerou sessão. Confirme o e-mail do usuário em Authentication → Users ou desative "Confirm email" para testes.'
+          );
+          return;
+        }
+        window.location.assign('/');
       }
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Erro desconhecido');
+    } catch (err: unknown) {
+      const raw = err && typeof err === 'object' && 'message' in err ? String((err as { message: string }).message) : 'Erro desconhecido';
+      setError(mapAuthErrorMessage(raw));
     } finally {
       setLoading(false);
     }

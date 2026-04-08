@@ -288,26 +288,26 @@ export default function DashboardPage() {
           isLoading={loading}
         />
 
-        <main ref={mainRef} className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">
-          <div className="mb-8 flex flex-col md:flex-row md:items-end justify-between gap-4">
+        <main ref={mainRef} className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 sm:pt-8">
+          <div className="mb-4 sm:mb-8 flex flex-col md:flex-row md:items-end justify-between gap-3 sm:gap-4">
             <div>
-              <h2 className="text-sm font-bold text-brand-600 uppercase tracking-widest mb-1">Visão Geral</h2>
-              <h1 className="text-3xl font-display font-extrabold">Seu Dashboard Financeiro</h1>
+              <h2 className="text-[10px] sm:text-sm font-bold text-brand-600 uppercase tracking-widest mb-0.5 sm:mb-1">Visão Geral</h2>
+              <h1 className="text-xl sm:text-3xl font-display font-extrabold">Seu Dashboard Financeiro</h1>
             </div>
             <StatusMessage message={status.message} type={status.type} />
           </div>
 
           {/* Tab Navigation */}
-          <div className="mb-8 flex gap-3">
+          <div className="mb-4 sm:mb-8 flex gap-2 sm:gap-3 overflow-x-auto pb-1 -mx-4 px-4 sm:mx-0 sm:px-0 snap-x">
             {(['real', 'projetado', 'consolidado'] as Tab[]).map((t) => (
               <button
                 key={t}
                 onClick={() => setTab(t)}
-                className={`tab-button ${tab === t ? 'active' : 'inactive'}`}
+                className={`tab-button text-xs sm:text-sm px-3 sm:px-4 py-2 sm:py-2.5 whitespace-nowrap snap-start ${tab === t ? 'active' : 'inactive'}`}
               >
                 {t === 'real' && '📊 Dados Reais'}
-                {t === 'projetado' && '🔮 Projeção Futura'}
-                {t === 'consolidado' && '📈 Visão Consolidada'}
+                {t === 'projetado' && '🔮 Projeção'}
+                {t === 'consolidado' && '📈 Consolidado'}
               </button>
             ))}
           </div>
@@ -320,12 +320,12 @@ export default function DashboardPage() {
               <RecurringList items={recurring} />
               <BudgetGoals goals={goals} categorySpending={categorySpending} onAddGoal={handleAddGoal} onDeleteGoal={handleDeleteGoal} />
 
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-8 mb-4 sm:mb-8">
                 <BalanceChart labels={balanceLabels} data={balanceData} />
                 <ExpenseChart categories={categorySpending} />
               </div>
 
-              <div className="mb-8">
+              <div className="mb-4 sm:mb-8">
                 <ComparisonChart labels={compLabels} incomeData={compIncome} expensesData={compExpenses} />
               </div>
 
@@ -337,13 +337,13 @@ export default function DashboardPage() {
           {tab === 'projetado' && (
             <div className="animate-fade-in">
               {projectionYears.length > 0 && (
-                <div className="flex items-center gap-4 mb-8">
+                <div className="grid grid-cols-2 sm:flex sm:items-center gap-3 sm:gap-4 mb-6 sm:mb-8">
                   <div>
-                    <label className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider block mb-2">Filtrar por Ano</label>
+                    <label className="text-[10px] sm:text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider block mb-1.5 sm:mb-2">Filtrar por Ano</label>
                     <select
                       value={projYear}
                       onChange={(e) => setProjYear(e.target.value)}
-                      className="px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 focus:ring-2 focus:ring-brand-500 focus:border-transparent"
+                      className="w-full sm:w-auto px-3 sm:px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 focus:ring-2 focus:ring-brand-500 focus:border-transparent text-sm"
                     >
                       {projectionYears.map((y) => (
                         <option key={y} value={String(y)}>{y}</option>
@@ -351,11 +351,11 @@ export default function DashboardPage() {
                     </select>
                   </div>
                   <div>
-                    <label className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider block mb-2">Filtrar por Mês</label>
+                    <label className="text-[10px] sm:text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider block mb-1.5 sm:mb-2">Filtrar por Mês</label>
                     <select
                       value={projMonth}
                       onChange={(e) => setProjMonth(e.target.value)}
-                      className="px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 focus:ring-2 focus:ring-brand-500 focus:border-transparent"
+                      className="w-full sm:w-auto px-3 sm:px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 focus:ring-2 focus:ring-brand-500 focus:border-transparent text-sm"
                     >
                       <option value="">Todos os Meses</option>
                       {projAvailableMonths.map((m) => {
@@ -377,12 +377,12 @@ export default function DashboardPage() {
                 badge="Projetado"
               />
 
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-8 mb-4 sm:mb-8">
                 <BalanceChart labels={projBalanceLabels} data={projBalanceData} title="Evolução Projetada do Saldo" />
                 <ExpenseChart categories={projCategorySpending} title="Distribuição de Despesas Projetadas" />
               </div>
 
-              <div className="mb-8">
+              <div className="mb-4 sm:mb-8">
                 <ComparisonChart
                   labels={projCompLabels}
                   incomeData={projCompIncome}
@@ -408,7 +408,7 @@ export default function DashboardPage() {
                 badge="Total"
               />
 
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-8 mb-4 sm:mb-8">
                 <BalanceChart labels={consCompLabels} data={consCompIncome.map((inc, i) => inc - consCompExpenses[i])} title="Evolução Consolidada do Saldo" />
                 <ExpenseChart categories={consCategorySpending} title="Distribuição de Despesas Consolidada" />
               </div>

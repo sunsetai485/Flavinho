@@ -5,8 +5,14 @@
 @tailwind utilities;
 
 @layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    -webkit-tap-highlight-color: transparent;
+  }
   body {
     @apply bg-surface text-slate-900 transition-colors duration-300;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
   .dark body {
     @apply bg-slate-950 text-slate-100;
@@ -30,22 +36,22 @@
   }
 
   .btn-primary {
-    @apply bg-brand-600 hover:bg-brand-700 text-white px-4 py-2 rounded-lg text-sm font-semibold transition-all;
+    @apply bg-brand-600 hover:bg-brand-700 text-white px-4 py-2 rounded-lg text-sm font-semibold transition-all active:scale-95;
   }
 
   .btn-secondary {
-    @apply bg-slate-100 hover:bg-slate-200 text-slate-700 px-4 py-2 rounded-lg text-sm font-semibold transition-all;
+    @apply bg-slate-100 hover:bg-slate-200 text-slate-700 px-4 py-2 rounded-lg text-sm font-semibold transition-all active:scale-95;
   }
   .dark .btn-secondary {
     @apply bg-slate-700 hover:bg-slate-600 text-slate-200;
   }
 
   .btn-success {
-    @apply bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-lg text-sm font-semibold transition-all;
+    @apply bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-lg text-sm font-semibold transition-all active:scale-95;
   }
 
   .tab-button {
-    @apply px-4 py-2.5 rounded-lg font-semibold text-sm transition-all cursor-pointer border;
+    @apply px-4 py-2.5 rounded-lg font-semibold text-sm transition-all cursor-pointer border active:scale-95;
   }
   .tab-button.active {
     @apply bg-brand-600 text-white border-brand-600;
@@ -82,17 +88,34 @@
   .budget-bar-fill {
     @apply h-full rounded-full transition-all duration-300;
   }
+
+  .safe-area-inset {
+    padding-top: env(safe-area-inset-top);
+    padding-bottom: env(safe-area-inset-bottom);
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
+  }
 }
 
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: translateY(0); }
 }
-.animate-fade-in { animation: fadeIn 0.5s ease-out forwards; }
+.animate-fade-in { animation: fadeIn 0.4s ease-out forwards; }
 
-::-webkit-scrollbar { height: 6px; width: 6px; }
+/* Scrollbar */
+::-webkit-scrollbar { height: 4px; width: 4px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { @apply bg-slate-300 rounded-full; }
 ::-webkit-scrollbar-thumb:hover { @apply bg-slate-400; }
 .dark ::-webkit-scrollbar-thumb { @apply bg-slate-600; }
 .dark ::-webkit-scrollbar-thumb:hover { @apply bg-slate-500; }
+
+/* Hide scrollbar for touch scroll areas */
+.scrollbar-hide::-webkit-scrollbar { display: none; }
+.scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* Prevent horizontal overflow on mobile */
+@media (max-width: 639px) {
+  html, body { overflow-x: hidden; }
+}

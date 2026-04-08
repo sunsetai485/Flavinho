@@ -36,9 +36,9 @@ export default function TransactionsTable({ transactions, title = 'Maiores Movim
     .slice(0, 15);
 
   return (
-    <div className="glass-card rounded-2xl overflow-hidden">
-      <div className="p-6 border-b border-slate-100 dark:border-slate-700 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <h3 className="text-lg font-display font-bold">{title}</h3>
+    <div className="glass-card rounded-xl sm:rounded-2xl overflow-hidden">
+      <div className="p-4 sm:p-6 border-b border-slate-100 dark:border-slate-700 flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
+        <h3 className="text-sm sm:text-lg font-display font-bold">{title}</h3>
         <div className="flex items-center gap-2">
           <span className="text-xs text-slate-400 font-medium">Mostrar:</span>
           <select
@@ -53,65 +53,86 @@ export default function TransactionsTable({ transactions, title = 'Maiores Movim
         </div>
       </div>
 
-      <div className="overflow-x-auto">
-        <table className="w-full text-left border-collapse">
-          <thead>
-            <tr className="bg-slate-50/50 dark:bg-slate-800/50">
-              <th className="px-6 py-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Data</th>
-              <th className="px-6 py-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Descrição</th>
-              <th className="px-6 py-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Categoria</th>
-              <th className="px-6 py-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest text-right">Valor</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-slate-100 dark:divide-slate-700">
-            {sorted.length === 0 ? (
-              <tr>
-                <td colSpan={4} className="px-6 py-12 text-center">
-                  <div className="flex flex-col items-center gap-3">
-                    <div className="w-12 h-12 bg-slate-50 dark:bg-slate-700 rounded-full flex items-center justify-center text-slate-300">
-                      <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                      </svg>
-                    </div>
-                    <p className="text-slate-400 text-sm font-medium">Aguardando importação de dados...</p>
-                  </div>
-                </td>
-              </tr>
-            ) : (
-              sorted.map((t) => {
-                const isExpense = Number(t.debit) > 0;
-                const amount = isExpense ? Number(t.debit) : Number(t.credit);
-                const color = CATEGORY_COLORS[t.category_name] || '#64748b';
-                const formattedDate = t.date.split('-').reverse().join('/');
+      {sorted.length === 0 ? (
+        <div className="px-4 sm:px-6 py-12 text-center">
+          <div className="flex flex-col items-center gap-3">
+            <div className="w-12 h-12 bg-slate-50 dark:bg-slate-700 rounded-full flex items-center justify-center text-slate-300">
+              <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+              </svg>
+            </div>
+            <p className="text-slate-400 text-sm font-medium">Aguardando importação de dados...</p>
+          </div>
+        </div>
+      ) : (
+        <>
+          {/* Mobile: card layout */}
+          <div className="sm:hidden divide-y divide-slate-100 dark:divide-slate-700">
+            {sorted.map((t) => {
+              const isExpense = Number(t.debit) > 0;
+              const amount = isExpense ? Number(t.debit) : Number(t.credit);
+              const color = CATEGORY_COLORS[t.category_name] || '#64748b';
+              const formattedDate = t.date.split('-').reverse().join('/');
 
-                return (
-                  <tr key={t.id} className="hover:bg-slate-50/80 dark:hover:bg-slate-700/50 transition-colors">
-                    <td className="px-6 py-4 whitespace-nowrap text-xs font-medium text-slate-500 dark:text-slate-400">
-                      {formattedDate}
-                    </td>
-                    <td className="px-6 py-4 text-sm font-semibold text-slate-700 dark:text-slate-200 truncate max-w-[200px]" title={t.description}>
+              return (
+                <div key={t.id} className="px-4 py-3 space-y-1">
+                  <div className="flex items-start justify-between gap-2">
+                    <p className="text-sm font-semibold text-slate-700 dark:text-slate-200 leading-tight line-clamp-2 flex-1" title={t.description}>
                       {t.description}
-                    </td>
-                    <td className="px-6 py-4">
-                      <span
-                        className="text-[10px] font-bold px-2 py-1 rounded-md uppercase tracking-wider"
-                        style={{ backgroundColor: `${color}15`, color }}
-                      >
-                        {t.category_name}
-                      </span>
-                    </td>
-                    <td className="px-6 py-4 text-right whitespace-nowrap">
-                      <span className={`text-sm font-bold ${isExpense ? 'text-rose-500' : 'text-emerald-500'}`}>
-                        {isExpense ? '-' : '+'} {formatCurrency(amount)}
-                      </span>
-                    </td>
-                  </tr>
-                );
-              })
-            )}
-          </tbody>
-        </table>
-      </div>
+                    </p>
+                    <span className={`text-sm font-bold whitespace-nowrap ${isExpense ? 'text-rose-500' : 'text-emerald-500'}`}>
+                      {isExpense ? '-' : '+'}{formatCurrency(amount)}
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-[10px] text-slate-400 font-medium">{formattedDate}</span>
+                    <span
+                      className="text-[9px] font-bold px-1.5 py-0.5 rounded uppercase tracking-wider"
+                      style={{ backgroundColor: `${color}15`, color }}
+                    >
+                      {t.category_name}
+                    </span>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+
+          {/* Desktop: table layout */}
+          <div className="hidden sm:block overflow-x-auto">
+            <table className="w-full text-left border-collapse">
+              <thead>
+                <tr className="bg-slate-50/50 dark:bg-slate-800/50">
+                  <th className="px-6 py-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Data</th>
+                  <th className="px-6 py-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Descrição</th>
+                  <th className="px-6 py-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Categoria</th>
+                  <th className="px-6 py-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest text-right">Valor</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-100 dark:divide-slate-700">
+                {sorted.map((t) => {
+                  const isExpense = Number(t.debit) > 0;
+                  const amount = isExpense ? Number(t.debit) : Number(t.credit);
+                  const color = CATEGORY_COLORS[t.category_name] || '#64748b';
+                  const formattedDate = t.date.split('-').reverse().join('/');
+                  return (
+                    <tr key={t.id} className="hover:bg-slate-50/80 dark:hover:bg-slate-700/50 transition-colors">
+                      <td className="px-6 py-4 whitespace-nowrap text-xs font-medium text-slate-500 dark:text-slate-400">{formattedDate}</td>
+                      <td className="px-6 py-4 text-sm font-semibold text-slate-700 dark:text-slate-200 truncate max-w-[200px]" title={t.description}>{t.description}</td>
+                      <td className="px-6 py-4">
+                        <span className="text-[10px] font-bold px-2 py-1 rounded-md uppercase tracking-wider" style={{ backgroundColor: `${color}15`, color }}>{t.category_name}</span>
+                      </td>
+                      <td className="px-6 py-4 text-right whitespace-nowrap">
+                        <span className={`text-sm font-bold ${isExpense ? 'text-rose-500' : 'text-emerald-500'}`}>{isExpense ? '-' : '+'} {formatCurrency(amount)}</span>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        </>
+      )}
     </div>
   );
 }

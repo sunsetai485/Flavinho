@@ -2,18 +2,28 @@
 -- Usuário de teste para login (email + senha)
 -- Rode no SQL Editor do Supabase (como postgres).
 --
--- Se o login falhar no app:
--- 1) Authentication → Providers → Email → desative "Confirm email" (testes)
--- 2) Authentication → URL Configuration → Site URL = URL do seu app (ex.: https://seu-dominio.com)
--- 3) Additional Redirect URLs: inclua a mesma URL e http://localhost:3000
--- 4) No deploy: NEXT_PUBLIC_* devem ser as chaves do MESMO projeto Supabase e rebuild após mudar
---
 -- E-mail: test@gmail.com
 -- Senha:  SenhaTeste123!
 --
--- Se der erro de coluna, o schema do auth mudou: use o painel
--- Authentication → Users → Add user (recomendado).
+-- Se o login falhar no app:
+-- 1) Authentication → Providers → Email → desative "Confirm email" (testes)
+-- 2) Authentication → URL Configuration → Site URL = URL do seu app
+-- 3) Additional Redirect URLs: URL do app + http://localhost:3000
+-- 4) Deploy: NEXT_PUBLIC_* do mesmo projeto + rebuild após mudar
 -- =============================================
+
+-- =============================================
+-- OPCIONAL: recriar o usuário do zero
+-- Se já existe test@gmail.com e você quer apagar e inserir de novo,
+-- rode APENAS o bloco abaixo (sem /* */), depois rode o restante do arquivo.
+-- =============================================
+/*
+begin;
+delete from auth.identities
+  where user_id in (select id from auth.users where lower(email) = lower('test@gmail.com'));
+delete from auth.users where lower(email) = lower('test@gmail.com');
+commit;
+*/
 
 begin;
 
@@ -25,10 +35,9 @@ declare
   mail text := 'test@gmail.com';
   pass text := 'SenhaTeste123!';
 begin
-  if exists (select 1 from auth.users where email = mail) then
-    raise exception 'Já existe usuário com e-mail %', mail;
-  end if;
-
+  if exists (select 1 from auth.users where lower(email) = lower(mail)) then
+    raise notice 'Usuário % já existe — nada foi alterado. Faça login com a senha que definiu ou use Authentication → Users → reset password. Para recriar, rode o bloco DELETE no topo deste arquivo (descomente).', mail;
+  else
   insert into auth.users (
     id,
     instance_id,
@@ -64,7 +73,6 @@ begin
     ''
   );
 
-  -- id da identity costuma ser o mesmo uuid do user para provider "email"
   insert into auth.identities (
     id,
     user_id,
@@ -89,6 +97,9 @@ begin
     timezone('utc', now()),
     timezone('utc', now())
   );
+
+  raise notice 'Usuário % criado. Senha: %', mail, pass;
+  end if;
 end $$;
 
 commit;

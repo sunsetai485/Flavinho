@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import Script from 'next/script';
 import './globals.css';
 
 export const metadata: Metadata = {
@@ -17,6 +18,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <body className="min-h-screen min-h-[100dvh] pb-8 sm:pb-12 antialiased">
         {children}
+        <Script
+          id="play4tune-webchat"
+          src="https://api.play4tune.sunsetai.com.br/webchat-embed/widget.js"
+          data-widget-id="31a5796b-bb3e-4677-bac1-b6c919eda968"
+          strategy="afterInteractive"
+        />
       </body>
     </html>
   );

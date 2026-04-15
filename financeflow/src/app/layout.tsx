@@ -1,10 +1,9 @@
 import type { Metadata } from 'next';
-import Play4TuneWebchat from '@/components/Play4TuneWebchat';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'FinanceFlow Pro | Dashboard de Gestão Financeira',
-  description: 'Sistema financeiro com projeções, metas de orçamento e análise inteligente de gastos',
+  title: 'Piloto ai | Lista de espera',
+  description: 'Cadastre seu e-mail para acompanhar o lançamento do Piloto ai.',
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -12,14 +11,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="pt-BR" suppressHydrationWarning>
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover" />
-        <meta name="theme-color" content="#0074ca" />
+        <meta name="theme-color" content="#0f172a" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
       </head>
-      <body className="min-h-screen min-h-[100dvh] pb-8 sm:pb-12 antialiased">
+      <body className="min-h-screen min-h-[100dvh] antialiased">
         {children}
-        {/* widget.js do backend retorna 404; chat usa a API /api/v1/webchat/* em Play4TuneWebchat */}
-        <Play4TuneWebchat />
       </body>
     </html>
   );

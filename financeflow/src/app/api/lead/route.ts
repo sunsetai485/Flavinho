@@ -1,4 +1,4 @@
-// Encaminha o e-mail informado pelo comprador (dificuldade de acesso à compra) ao webhook n8n.
+// Encaminha ao n8n o e-mail registrado pela equipe de suporte (usuário com problema de login).
 import { NextRequest, NextResponse } from 'next/server';
 
 const DEFAULT_WEBHOOK =

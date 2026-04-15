@@ -2,9 +2,10 @@ import type { Metadata } from 'next';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'Piloto ai | Acesso à compra',
+  title: 'Piloto ai | Cadastro interno — problema de login',
   description:
-    'Informe o e-mail da sua compra se estiver com dificuldade para acessar. Nossa equipe ajuda a recuperar o acesso.',
+    'Ferramenta interna para a equipe de suporte registrar o e-mail de usuários que não conseguem fazer login.',
+  robots: { index: false, follow: false },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

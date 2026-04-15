@@ -2,8 +2,9 @@ import type { Metadata } from 'next';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'Piloto ai | Lista de espera',
-  description: 'Cadastre seu e-mail para acompanhar o lançamento do Piloto ai.',
+  title: 'Piloto ai | Acesso à compra',
+  description:
+    'Informe o e-mail da sua compra se estiver com dificuldade para acessar. Nossa equipe ajuda a recuperar o acesso.',
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

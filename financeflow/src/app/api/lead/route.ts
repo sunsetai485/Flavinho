@@ -1,3 +1,4 @@
+// Encaminha o e-mail informado pelo comprador (dificuldade de acesso à compra) ao webhook n8n.
 import { NextRequest, NextResponse } from 'next/server';
 
 const DEFAULT_WEBHOOK =
